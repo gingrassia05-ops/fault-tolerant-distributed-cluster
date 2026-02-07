@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Node Live Ledger - Connection Tracker</title>
+    <style>
+        body { 
+            font-family: 'Courier New', Courier, monospace; 
+            background-color: #0d1117; 
+            color: #58a6ff; 
+            padding: 30px;
+            line-height: 1.6;
+        }
+        .container { 
+            border: 1px solid #30363d; 
+            padding: 20px; 
+            border-radius: 8px; 
+            background: #161b22;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        h1 { color: #f0f6fc; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+        .status-bar { margin-bottom: 20px; font-size: 1.2em; }
+        .count { color: #79c0ff; font-weight: bold; font-size: 1.5em; }
+        #client-list { list-style: none; padding: 0; }
+        .client-id { 
+            background: #21262d; 
+            margin: 8px 0; 
+            padding: 10px; 
+            border-left: 4px solid #238636; 
+            border-radius: 4px;
+            animation: flash 0.5s ease-out;
+        }
+        @keyframes flash {
+            from { background: #238636; }
+            to { background: #21262d; }
+        }
+        .footer { color: #8b949e; font-size: 0.8em; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>[NODE_SERVER] Activity Monitor</h1>
+        
+        <div class="status-bar">
+            Active connection on HTTP socket: <span id="total-count" class="count">0</span>
+        </div>
+
+        <div id="ledger">
+            <h3>Connection IDs list(Real-time):</h3>
+            <ul id="client-list">
+                </ul>
+        </div>
+
+        <div class="footer">
+            TCP permanent connection established. Receiving stream...
+        </div>
+    </div>
+
+    <script>
+        function update(clientList) {
+            const listElement = document.getElementById('client-list');
+            const countElement = document.getElementById('total-count');
+            
+            // Update data
+            countElement.innerText = clientList.length;
+
+            // Regen ID list
+            listElement.innerHTML = '';
+            clientList.forEach(id => {
+                const li = document.createElement('li');
+                li.className = 'client-id';
+                li.innerText = 'Session ID: ' + id;
+                listElement.appendChild(li);
+            });
+        }
+    </script>
+    
